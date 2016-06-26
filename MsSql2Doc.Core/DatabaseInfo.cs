@@ -42,20 +42,47 @@ namespace MsSql2Doc.Core
                 // Process database info
                 xmlDoc.AppendChild(xmlDoc.CreateElement("database"));
                 xmlDoc.DocumentElement.SetAttribute("dateGenerated", XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.RoundtripKind));
-                DatabaseHelper.RenderDatabase(this._connectionString,xmlDoc.DocumentElement);
+                DatabaseHelper.RenderDatabase(this._connectionString, xmlDoc.DocumentElement);
 
                 // Process schemas
-                DatabaseHelper.RenderSchemas(this._connectionString,xmlDoc.DocumentElement);
+                DatabaseHelper.RenderSchemas(this._connectionString, xmlDoc.DocumentElement);
 
                 // Process top-level objects
                 DatabaseHelper.RenderChildObjects(this._connectionString, xmlDoc.DocumentElement, 0);
-                
+
                 return xmlDoc;
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
         }
+
+        #region 輸出成檔案
+        /// <summary>
+        /// 輸出 Xml 成檔案
+        /// </summary>
+        /// <param name="FileName">輸出檔名</param>
+        public void ToXmlFile(string fileName = "DB.Xml")
+        {
+            var xmlDoc = ToXml();
+            xmlDoc.Save(fileName);
+        }
+        /// <summary>
+        /// 使用樣版輸出檔案
+        /// </summary>
+        /// <param name="templatePath">樣版路徑</param>
+        /// <param name="FileName">輸出檔名</param>
+        public void ToFileWithTemplate(string templatePath, string fileName = "DB.html")
+        {
+            var xmlDoc = ToXml();
+            var tran = new XslCompiledTransform();
+            tran.Load(templatePath);
+            using (var fw = File.CreateText(fileName))
+            {
+                tran.Transform(xmlDoc, null, fw);
+            }
+        }
+        #endregion 輸出成檔案
     }
 }
