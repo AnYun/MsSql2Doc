@@ -83,6 +83,7 @@
             this.listTemplate.Name = "listTemplate";
             this.listTemplate.Size = new System.Drawing.Size(218, 136);
             this.listTemplate.TabIndex = 4;
+            this.listTemplate.SelectedIndexChanged += new System.EventHandler(this.listTemplate_SelectedIndexChanged);
             // 
             // label3
             // 

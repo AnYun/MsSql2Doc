@@ -20,7 +20,11 @@ namespace MsSql2Doc
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// 產生文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnGeneratDoc_Click(object sender, EventArgs e)
         {
             var connectionString = this.textConnectionString.Text;
@@ -30,12 +34,12 @@ namespace MsSql2Doc
 
             if (selectTemplate == "Xml")
             {
-                dbInfo.ToXmlFile();
+                dbInfo.ToXmlFile(fileName);
             }
             else
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), TemplatePath, selectTemplate);
-                dbInfo.ToFileWithTemplate(path);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), TemplatePath, selectTemplate + ".xslt");
+                dbInfo.ToFileWithTemplate(path, fileName);
             }
 
             MessageBox.Show("匯出完成");
@@ -61,11 +65,25 @@ namespace MsSql2Doc
                 var fileList = d.GetFiles("*.xslt");
                 foreach (var file in fileList)
                 {
-                    tempList.Add(file.Name);
+                    tempList.Add(Path.GetFileNameWithoutExtension(file.Name));
                 }
             }
 
             return tempList;
+        }
+        /// <summary>
+        /// 選擇樣版
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void listTemplate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var extension = Path.GetExtension(this.listTemplate.SelectedItem.ToString());
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = ".xml";
+            }
+            this.textFileName.Text = $"Schema{extension}";
         }
     }
 }

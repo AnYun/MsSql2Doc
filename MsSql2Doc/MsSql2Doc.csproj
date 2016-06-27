@@ -86,10 +86,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Template\Html.xslt">
+    <Content Include="Template\Simple.html.xslt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Template\WikiPlex.xslt">
+    <Content Include="Template\WikiPlex.txt.xslt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
